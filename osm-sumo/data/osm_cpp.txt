@@ -1,0 +1,609 @@
+
+NIImporter_OpenStreetMap::RelationHandler::RelationHandler(
+    const std::map<long long int, NIOSMNode*>& osmNodes,
+    const std::map<long long int, Edge*>& osmEdges, NBPTStopCont* nbptStopCont,
+    const std::map<long long int, Edge*>& platformShapes,
+    NBPTLineCont* nbptLineCont,
+    const OptionsCont& oc)
+    :
+    SUMOSAXHandler("osm - file"),
+    myOSMNodes(osmNodes),
+    myOSMEdges(osmEdges),
+    myPlatformShapes(platformShapes),
+    myNBPTStopCont(nbptStopCont),
+    myNBPTLineCont(nbptLineCont),
+    myOptionsCont(oc) {
+    resetValues();
+}
+
+NIImporter_OpenStreetMap::RelationHandler::~RelationHandler() = default;
+
+void
+NIImporter_OpenStreetMap::RelationHandler::resetValues() {
+    myCurrentRelation = INVALID_ID;
+    myIsRestriction = false;
+    myFromWay = INVALID_ID;
+    myToWay = INVALID_ID;
+    myViaNode = INVALID_ID;
+    myViaWay = INVALID_ID;
+    myRestrictionType = RESTRICTION_UNKNOWN;
+    myPlatforms.clear();
+    myStops.clear();
+    myWays.clear();
+    myIsStopArea = false;
+    myIsRoute = false;
+    myPTRouteType = "";
+}
+
+void
+NIImporter_OpenStreetMap::RelationHandler::myStartElement(int element,
+        const SUMOSAXAttributes& attrs) {
+    myParentElements.push_back(element);
+    // parse "way" elements
+    if (element == SUMO_TAG_RELATION) {
+        bool ok = true;
+        myCurrentRelation = attrs.get<long long int>(SUMO_ATTR_ID, nullptr, ok);
+        const std::string action = attrs.hasAttribute("action") ? attrs.getStringSecure("action", "") : "";
+        if (action == "delete" || !ok) {
+            myCurrentRelation = INVALID_ID;
+        }
+        myName = "";
+        myRef = "";
+        myInterval = -1;
+        myNightService = "";
+        return;
+    }
+    if (myCurrentRelation == INVALID_ID) {
+        return;
+    }
+    // parse member elements
+    if (element == SUMO_TAG_MEMBER) {
+        bool ok = true;
+        std::string role = attrs.hasAttribute("role") ? attrs.getStringSecure("role", "") : "";
+        auto ref = attrs.get<long
+                   long
+                   int>(SUMO_ATTR_REF, nullptr, ok);
+        if (role == "via") {
+            // u-turns for divided ways may be given with 2 via-nodes or 1 via-way
+            std::string memberType = attrs.get<std::string>(SUMO_ATTR_TYPE, nullptr, ok);
+            if (memberType == "way" && checkEdgeRef(ref)) {
+                myViaWay = ref;
+            } else if (memberType == "node") {
+                if (myOSMNodes.find(ref) != myOSMNodes.end()) {
+                    myViaNode = ref;
+                } else {
+                    WRITE_WARNING(
+                        "No node found for reference '" + toString(ref) + "' in relation '"
+                        + toString(myCurrentRelation)
+                        + "'");
+                }
+            }
+        } else if (role == "from" && checkEdgeRef(ref)) {
+            myFromWay = ref;
+        } else if (role == "to" && checkEdgeRef(ref)) {
+            myToWay = ref;
+        } else if (role == "stop") {
+            myStops.push_back(ref);
+        } else if (role == "platform") {
+            std::string memberType = attrs.get<std::string>(SUMO_ATTR_TYPE, nullptr, ok);
+            if (memberType == "way") {
+                const std::map<long long int,
+                      NIImporter_OpenStreetMap::Edge*>::const_iterator& wayIt = myPlatformShapes.find(ref);
+                if (wayIt != myPlatformShapes.end()) {
+
+                    NIIPTPlatform platform;
+                    platform.isWay = true;
+                    platform.ref = ref;
+                    myPlatforms.push_back(platform);
+                }
+            } else if (memberType == "node") {
+                NIIPTPlatform platform;
+                platform.isWay = false;
+                platform.ref = ref;
+                myPlatforms.push_back(platform);
+            }
+
+        } else if (role.empty()) {
+            std::string memberType = attrs.get<std::string>(SUMO_ATTR_TYPE, nullptr, ok);
+            if (memberType == "way") {
+                myWays.push_back(ref);
+            }
+        }
+        return;
+    }
+    // parse values
+    if (element == SUMO_TAG_TAG) {
+        bool ok = true;
+        std::string key = attrs.get<std::string>(SUMO_ATTR_K, toString(myCurrentRelation).c_str(), ok, false);
+        // we check whether the key is relevant (and we really need to transcode the value) to avoid hitting #1636
+        if (key == "type" || key == "restriction") {
+            std::string value = attrs.get<std::string>(SUMO_ATTR_V, toString(myCurrentRelation).c_str(), ok, false);
+            if (key == "type" && value == "restriction") {
+                myIsRestriction = true;
+                return;
+            }
+            if (key == "type" && value == "route") {
+                myIsRoute = true;
+                return;
+            }
+            if (key == "restriction") {
+                // @note: the 'right/left/straight' part is ignored since the information is
+                // redundantly encoded in the 'from', 'to' and 'via' members
+                if (value.substr(0, 5) == "only_") {
+                    myRestrictionType = RESTRICTION_ONLY;
+                } else if (value.substr(0, 3) == "no_") {
+                    myRestrictionType = RESTRICTION_NO;
+                } else {
+                    WRITE_WARNING(
+                        "Found unknown restriction type '" + value + "' in relation '" + toString(myCurrentRelation)
+                        + "'");
+                }
+                return;
+            }
+        } else if (key == "public_transport") {
+            std::string value = attrs.get<std::string>(SUMO_ATTR_V, toString(myCurrentRelation).c_str(), ok, false);
+            if (value == "stop_area") {
+                myIsStopArea = true;
+            }
+        } else if (key == "route") {
+            std::string value = attrs.get<std::string>(SUMO_ATTR_V, toString(myCurrentRelation).c_str(), ok, false);
+            if (value == "train" || value == "subway" || value == "light_rail" || value == "monorail" || value == "tram" || value == "bus"
+                    || value == "trolleybus" || value == "arialway" || value == "ferry") {
+                myPTRouteType = value;
+            }
+
+        } else if (key == "name") {
+            myName = attrs.get<std::string>(SUMO_ATTR_V, toString(myCurrentRelation).c_str(), ok, false);
+        } else if (key == "ref") {
+            myRef = attrs.get<std::string>(SUMO_ATTR_V, toString(myCurrentRelation).c_str(), ok, false);
+        } else if (key == "interval" || key == "headway") {
+            myInterval = attrs.get<int>(SUMO_ATTR_V, toString(myCurrentRelation).c_str(), ok, false);
+        } else if (key == "by_night") {
+            myNightService = attrs.get<std::string>(SUMO_ATTR_V, toString(myCurrentRelation).c_str(), ok, false);
+        }
+    }
+}
+
+bool
+NIImporter_OpenStreetMap::RelationHandler::checkEdgeRef(long long int ref) const {
+    if (myOSMEdges.find(ref) != myOSMEdges.end()) {
+        return true;
+    }
+
+    WRITE_WARNING(
+        "No way found for reference '" + toString(ref) + "' in relation '" + toString(myCurrentRelation) + "'");
+    return false;
+
+}
+
+void
+NIImporter_OpenStreetMap::RelationHandler::myEndElement(int element) {
+    myParentElements.pop_back();
+    if (element == SUMO_TAG_RELATION) {
+        if (myIsRestriction) {
+            assert(myCurrentRelation != INVALID_ID);
+            bool ok = true;
+            if (myRestrictionType == RESTRICTION_UNKNOWN) {
+                WRITE_WARNING("Ignoring restriction relation '" + toString(myCurrentRelation) + "' with unknown type.");
+                ok = false;
+            }
+            if (myFromWay == INVALID_ID) {
+                WRITE_WARNING(
+                    "Ignoring restriction relation '" + toString(myCurrentRelation) + "' with unknown from-way.");
+                ok = false;
+            }
+            if (myToWay == INVALID_ID) {
+                WRITE_WARNING(
+                    "Ignoring restriction relation '" + toString(myCurrentRelation) + "' with unknown to-way.");
+                ok = false;
+            }
+            if (myViaNode == INVALID_ID && myViaWay == INVALID_ID) {
+                WRITE_WARNING("Ignoring restriction relation '" + toString(myCurrentRelation) + "' with unknown via.");
+                ok = false;
+            }
+            if (ok && !applyRestriction()) {
+                WRITE_WARNING("Ignoring restriction relation '" + toString(myCurrentRelation) + "'.");
+            }
+        } else if (myIsStopArea && OptionsCont::getOptions().isSet("ptstop-output")) {
+            for (long long ref : myStops) {
+                if (myOSMNodes.find(ref) == myOSMNodes.end()) {
+                    //WRITE_WARNING(
+                    //    "Referenced node: '" + toString(ref) + "' in relation: '" + toString(myCurrentRelation)
+                    //    + "' does not exist. Probably OSM file is incomplete.");
+                    continue;
+                }
+
+                NIOSMNode* n = myOSMNodes.find(ref)->second;
+                NBPTStop* ptStop = myNBPTStopCont->get(toString(n->id));
+                if (ptStop == nullptr) {
+                    //WRITE_WARNING(
+                    //    "Relation '" + toString(myCurrentRelation) + "' refers to a non existing pt stop at node: '"
+                    //    + toString(n->id) + "'. Probably OSM file is incomplete.");
+                    continue;
+                }
+                for (NIIPTPlatform& myPlatform : myPlatforms) {
+                    if (myPlatform.isWay) {
+                        assert(myPlatformShapes.find(myPlatform.ref) != myPlatformShapes.end()); //already tested earlier
+                        Edge* edge = (*myPlatformShapes.find(myPlatform.ref)).second;
+                        if (edge->myCurrentNodes[0] == *(edge->myCurrentNodes.end() - 1)) {
+                            WRITE_WARNING("Platform '" + toString(myPlatform.ref) + "' in  relation: '" + toString(myCurrentRelation)
+                                          + "'  is given as polygon, which currently is not supported.");
+                            continue;
+
+                        }
+                        PositionVector p;
+                        for (auto nodeRef : edge->myCurrentNodes) {
+                            if (myOSMNodes.find(nodeRef) == myOSMNodes.end()) {
+                                //WRITE_WARNING(
+                                //    "Referenced node: '" + toString(ref) + "' in relation: '" + toString(myCurrentRelation)
+                                //    + "' does not exist. Probably OSM file is incomplete.");
+                                continue;
+                            }
+                            NIOSMNode* pNode = myOSMNodes.find(nodeRef)->second;
+                            Position pNodePos(pNode->lon, pNode->lat, pNode->ele);
+                            if (!NBNetBuilder::transformCoordinate(pNodePos)) {
+                                WRITE_ERROR("Unable to project coordinates for node '" + toString(pNode->id) + "'.");
+                                continue;
+                            }
+                            p.push_back(pNodePos);
+                        }
+                        if (p.size() == 0) {
+                            WRITE_WARNING(
+                                "Referenced platform: '" + toString(myPlatform.ref) + "' in relation: '" + toString(myCurrentRelation)
+                                + "' is corrupt. Probably OSM file is incomplete.");
+                            continue;
+                        }
+                        NBPTPlatform platform(p[(int)p.size() / 2], p.length());
+                        ptStop->addPlatformCand(platform);
+                    } else {
+                        if (myOSMNodes.find(myPlatform.ref) == myOSMNodes.end()) {
+                            //WRITE_WARNING(
+                            //    "Referenced node: '" + toString(ref) + "' in relation: '" + toString(myCurrentRelation)
+                            //    + "' does not exist. Probably OSM file is incomplete.");
+                            continue;
+                        }
+                        NIOSMNode* pNode = myOSMNodes.find(myPlatform.ref)->second;
+                        Position platformPos(pNode->lon, pNode->lat, pNode->ele);
+                        if (!NBNetBuilder::transformCoordinate(platformPos)) {
+                            WRITE_ERROR("Unable to project coordinates for node '" + toString(pNode->id) + "'.");
+                        }
+                        NBPTPlatform platform(platformPos, myOptionsCont.getFloat(
+                                                  "osm.stop-output.length"));
+                        ptStop->addPlatformCand(platform);
+
+                    }
+                }
+                ptStop->setIsMultipleStopPositions(myStops.size() > 1);;
+            }
+        } else if (myPTRouteType != "" && myIsRoute && OptionsCont::getOptions().isSet("ptline-output") && myStops.size() > 1) {
+            NBPTLine* ptLine = new NBPTLine(myName, myPTRouteType, myRef, myInterval, myNightService);
+            ptLine->setMyNumOfStops((int)myStops.size());
+            for (long long ref : myStops) {
+                if (myOSMNodes.find(ref) == myOSMNodes.end()) {
+                    //WRITE_WARNING(
+                    //    "Referenced node: '" + toString(ref) + "' in relation: '" + toString(myCurrentRelation)
+                    //    + "' does not exist. Probably OSM file is incomplete.");
+//                    resetValues();
+//                    return;
+                    if (!ptLine->getStops().empty()) {
+                        WRITE_WARNING("Done reading first coherent chunk of pt stops. Further stops in relation " + toString(myCurrentRelation) + " are ignored");
+                        break;
+                    }
+                    continue;
+                }
+
+                NIOSMNode* n = myOSMNodes.find(ref)->second;
+                NBPTStop* ptStop = myNBPTStopCont->get(toString(n->id));
+                if (ptStop == nullptr) {
+                    //WRITE_WARNING("Relation '" + toString(myCurrentRelation)
+                    //              + "' refers to a non existing pt stop at node: '" + toString(n->id)
+                    //              + "'. Probably OSM file is incomplete.");
+//                    resetValues();
+//                    return;
+                    if (!ptLine->getStops().empty()) {
+                        WRITE_WARNING("Done reading first coherent chunk of pt stops. Further stops in relation " + toString(myCurrentRelation) + " are ignored");
+                        break;
+                    }
+                    continue;
+                }
+                ptLine->addPTStop(ptStop);
+            }
+            for (long long& myWay : myWays) {
+                auto entr = myOSMEdges.find(myWay);
+                if (entr != myOSMEdges.end()) {
+                    Edge* edge = entr->second;
+                    for (long long& myCurrentNode : edge->myCurrentNodes) {
+                        ptLine->addWayNode(myWay, myCurrentNode);
+                    }
+                }
+            }
+            if (ptLine->getStops().empty()) {
+                WRITE_WARNING("PT line in relation " + toString(myCurrentRelation) + " with no stops ignored. Probably OSM file is incomplete.");
+                resetValues();
+                return;
+            }
+            myNBPTLineCont->insert(ptLine);
+        }
+        // other relations might use similar subelements so reset in any case
+        resetValues();
+    }
+}
+
+bool
+NIImporter_OpenStreetMap::RelationHandler::applyRestriction() const {
+    // since OSM ways are bidirectional we need the via to figure out which direction was meant
+    if (myViaNode != INVALID_ID) {
+        NBNode* viaNode = myOSMNodes.find(myViaNode)->second->node;
+        if (viaNode == nullptr) {
+            WRITE_WARNING("Via-node '" + toString(myViaNode) + "' was not instantiated");
+            return false;
+        }
+        NBEdge* from = findEdgeRef(myFromWay, viaNode->getIncomingEdges());
+        NBEdge* to = findEdgeRef(myToWay, viaNode->getOutgoingEdges());
+        if (from == nullptr) {
+            WRITE_WARNING("from-edge of restriction relation could not be determined");
+            return false;
+        }
+        if (to == nullptr) {
+            WRITE_WARNING("to-edge of restriction relation could not be determined");
+            return false;
+        }
+        if (myRestrictionType == RESTRICTION_ONLY) {
+            from->addEdge2EdgeConnection(to);
+        } else {
+            from->removeFromConnections(to, -1, -1, true);
+        }
+    } else {
+        // XXX interpreting via-ways or via-node lists not yet implemented
+        WRITE_WARNING("direction of restriction relation could not be determined");
+        return false;
+    }
+    return true;
+}
+
+NBEdge*
+NIImporter_OpenStreetMap::RelationHandler::findEdgeRef(long long int wayRef,
+        const std::vector<NBEdge*>& candidates) const {
+    const std::string prefix = toString(wayRef);
+    const std::string backPrefix = "-" + prefix;
+    NBEdge* result = nullptr;
+    int found = 0;
+    for (auto candidate : candidates) {
+        if ((candidate->getID().substr(0, prefix.size()) == prefix) ||
+                (candidate->getID().substr(0, backPrefix.size()) == backPrefix)) {
+            result = candidate;
+            found++;
+        }
+    }
+    if (found > 1) {
+        WRITE_WARNING("Ambigous way reference '" + prefix + "' in restriction relation");
+        result = nullptr;
+    }
+    return result;
+}
+
+void
+NIImporter_OpenStreetMap::reconstructLayerElevation(const double layerElevation, NBNetBuilder& nb) {
+    NBNodeCont& nc = nb.getNodeCont();
+    NBEdgeCont& ec = nb.getEdgeCont();
+    // reconstruct elevation from layer info
+    // build a map of raising and lowering forces (attractor and distance)
+    // for all nodes unknownElevation
+    std::map<NBNode*, std::vector<std::pair<double, double> > > layerForces;
+
+    // collect all nodes that belong to a way with layer information
+    std::set<NBNode*> knownElevation;
+    for (auto& myEdge : myEdges) {
+        Edge* e = myEdge.second;
+        if (e->myLayer != 0) {
+            for (auto j = e->myCurrentNodes.begin(); j != e->myCurrentNodes.end(); ++j) {
+                NBNode* node = nc.retrieve(toString(*j));
+                if (node != nullptr) {
+                    knownElevation.insert(node);
+                    layerForces[node].emplace_back(e->myLayer * layerElevation, POSITION_EPS);
+                }
+            }
+        }
+    }
+#ifdef DEBUG_LAYER_ELEVATION
+    std::cout << "known elevations:\n";
+    for (std::set<NBNode*>::iterator it = knownElevation.begin(); it != knownElevation.end(); ++it) {
+        const std::vector<std::pair<double, double> >& primaryLayers = layerForces[*it];
+        std::cout << "  node=" << (*it)->getID() << " ele=";
+        for (std::vector<std::pair<double, double> >::const_iterator it_ele = primaryLayers.begin(); it_ele != primaryLayers.end(); ++it_ele) {
+            std::cout << it_ele->first << " ";
+        }
+        std::cout << "\n";
+    }
+#endif
+    // layer data only provides a lower bound on elevation since it is used to
+    // resolve the relation among overlapping ways.
+    // Perform a sanity check for steep inclines and raise the knownElevation if necessary
+    std::map<NBNode*, double> knownEleMax;
+    for (auto it : knownElevation) {
+        double eleMax = -std::numeric_limits<double>::max();
+        const std::vector<std::pair<double, double> >& primaryLayers = layerForces[it];
+        for (const auto& primaryLayer : primaryLayers) {
+            eleMax = MAX2(eleMax, primaryLayer.first);
+        }
+        knownEleMax[it] = eleMax;
+    }
+    const double gradeThreshold = OptionsCont::getOptions().getFloat("osm.layer-elevation.max-grade") / 100;
+    bool changed = true;
+    while (changed) {
+        changed = false;
+        for (auto it = knownElevation.begin(); it != knownElevation.end(); ++it) {
+            std::map<NBNode*, std::pair<double, double> > neighbors = getNeighboringNodes(*it,
+                    knownEleMax[*it]
+                    / gradeThreshold * 3,
+                    knownElevation);
+            for (auto& neighbor : neighbors) {
+                if (knownElevation.count(neighbor.first) != 0) {
+                    const double grade = fabs(knownEleMax[*it] - knownEleMax[neighbor.first])
+                                         / MAX2(POSITION_EPS, neighbor.second.first);
+#ifdef DEBUG_LAYER_ELEVATION
+                    std::cout << "   grade at node=" << (*it)->getID() << " ele=" << knownEleMax[*it] << " neigh=" << it_neigh->first->getID() << " neighEle=" << knownEleMax[it_neigh->first] << " grade=" << grade << " dist=" << it_neigh->second.first << " speed=" << it_neigh->second.second << "\n";
+#endif
+                    if (grade > gradeThreshold * 50 / 3.6 / neighbor.second.second) {
+                        // raise the lower node to the higher level
+                        const double eleMax = MAX2(knownEleMax[*it], knownEleMax[neighbor.first]);
+                        if (knownEleMax[*it] < eleMax) {
+                            knownEleMax[*it] = eleMax;
+                        } else {
+                            knownEleMax[neighbor.first] = eleMax;
+                        }
+                        changed = true;
+                    }
+                }
+            }
+        }
+    }
+
+    // collect all nodes within a grade-dependent range around knownElevation-nodes and apply knowElevation forces
+    std::set<NBNode*> unknownElevation;
+    for (auto it = knownElevation.begin(); it != knownElevation.end(); ++it) {
+        const double eleMax = knownEleMax[*it];
+        const double maxDist = fabs(eleMax) * 100 / layerElevation;
+        std::map<NBNode*, std::pair<double, double> > neighbors = getNeighboringNodes(*it, maxDist, knownElevation);
+        for (auto& neighbor : neighbors) {
+            if (knownElevation.count(neighbor.first) == 0) {
+                unknownElevation.insert(neighbor.first);
+                layerForces[neighbor.first].emplace_back(eleMax, neighbor.second.first);
+            }
+        }
+    }
+
+    // apply forces to ground-level nodes (neither in knownElevation nor unknownElevation)
+    for (auto it = unknownElevation.begin(); it != unknownElevation.end(); ++it) {
+        double eleMax = -std::numeric_limits<double>::max();
+        const std::vector<std::pair<double, double> >& primaryLayers = layerForces[*it];
+        for (const auto& primaryLayer : primaryLayers) {
+            eleMax = MAX2(eleMax, primaryLayer.first);
+        }
+        const double maxDist = fabs(eleMax) * 100 / layerElevation;
+        std::map<NBNode*, std::pair<double, double> > neighbors = getNeighboringNodes(*it, maxDist, knownElevation);
+        for (auto& neighbor : neighbors) {
+            if (knownElevation.count(neighbor.first) == 0 && unknownElevation.count(neighbor.first) == 0) {
+                layerForces[*it].emplace_back(0, neighbor.second.first);
+            }
+        }
+    }
+    // compute the elevation for each node as the weighted average of all forces
+#ifdef DEBUG_LAYER_ELEVATION
+    std::cout << "summation of forces\n";
+#endif
+    std::map<NBNode*, double> nodeElevation;
+    for (auto& layerForce : layerForces) {
+        const std::vector<std::pair<double, double> >& forces = layerForce.second;
+        if (knownElevation.count(layerForce.first) != 0) {
+            // use the maximum value
+            /*
+            double eleMax = -std::numeric_limits<double>::max();
+            for (std::vector<std::pair<double, double> >::const_iterator it_force = forces.begin(); it_force != forces.end(); ++it_force) {
+                eleMax = MAX2(eleMax, it_force->first);
+            }
+            */
+#ifdef DEBUG_LAYER_ELEVATION
+            std::cout << "   node=" << it->first->getID() << " knownElevation=" << knownEleMax[it->first] << "\n";
+#endif
+            nodeElevation[layerForce.first] = knownEleMax[layerForce.first];
+        } else if (forces.size() == 1) {
+            nodeElevation[layerForce.first] = forces.front().first;
+        } else {
+            // use the weighted sum
+            double distSum = 0;
+            for (const auto& force : forces) {
+                distSum += force.second;
+            }
+            double weightSum = 0;
+            double elevation = 0;
+#ifdef DEBUG_LAYER_ELEVATION
+            std::cout << "   node=" << it->first->getID() << "  distSum=" << distSum << "\n";
+#endif
+            for (const auto& force : forces) {
+                const double weight = (distSum - force.second) / distSum;
+                weightSum += weight;
+                elevation += force.first * weight;
+
+#ifdef DEBUG_LAYER_ELEVATION
+                std::cout << "       force=" << it_force->first << " dist=" << it_force->second << "  weight=" << weight << " ele=" << elevation << "\n";
+#endif
+            }
+            nodeElevation[layerForce.first] = elevation / weightSum;
+        }
+    }
+#ifdef DEBUG_LAYER_ELEVATION
+    std::cout << "final elevations:\n";
+    for (std::map<NBNode*, double>::iterator it = nodeElevation.begin(); it != nodeElevation.end(); ++it) {
+        std::cout << "  node=" << (it->first)->getID() << " ele=" << it->second << "\n";;
+    }
+#endif
+    // apply node elevations
+    for (auto& it : nodeElevation) {
+        NBNode* n = it.first;
+        Position pos = n->getPosition();
+        n->reinit(n->getPosition() + Position(0, 0, it.second), n->getType());
+    }
+
+    // apply way elevation to all edges that had layer information
+    for (const auto& it : ec) {
+        NBEdge* edge = it.second;
+        const PositionVector& geom = edge->getGeometry();
+        const double length = geom.length2D();
+        const double zFrom = nodeElevation[edge->getFromNode()];
+        const double zTo = nodeElevation[edge->getToNode()];
+        // XXX if the from- or to-node was part of multiple ways with
+        // different layers, reconstruct the layer value from origID
+        double dist = 0;
+        PositionVector newGeom;
+        for (auto it_pos = geom.begin(); it_pos != geom.end(); ++it_pos) {
+            if (it_pos != geom.begin()) {
+                dist += (*it_pos).distanceTo2D(*(it_pos - 1));
+            }
+            newGeom.push_back((*it_pos) + Position(0, 0, zFrom + (zTo - zFrom) * dist / length));
+        }
+        edge->setGeometry(newGeom);
+    }
+}
+
+std::map<NBNode*, std::pair<double, double> >
+NIImporter_OpenStreetMap::getNeighboringNodes(NBNode* node, double maxDist, const std::set<NBNode*>& knownElevation) {
+    std::map<NBNode*, std::pair<double, double> > result;
+    std::set<NBNode*> visited;
+    std::vector<NBNode*> open;
+    open.push_back(node);
+    result[node] = std::make_pair(0, 0);
+    while (!open.empty()) {
+        NBNode* n = open.back();
+        open.pop_back();
+        if (visited.count(n) != 0) {
+            continue;
+        }
+        visited.insert(n);
+        const EdgeVector& edges = n->getEdges();
+        for (auto e : edges) {
+            NBNode* s = nullptr;
+            if (n->hasIncoming(e)) {
+                s = e->getFromNode();
+            } else {
+                s = e->getToNode();
+            }
+            const double dist = result[n].first + e->getGeometry().length2D();
+            const double speed = MAX2(e->getSpeed(), result[n].second);
+            if (result.count(s) == 0) {
+                result[s] = std::make_pair(dist, speed);
+            } else {
+                result[s] = std::make_pair(MIN2(dist, result[s].first), MAX2(speed, result[s].second));
+            }
+            if (dist < maxDist && knownElevation.count(s) == 0) {
+                open.push_back(s);
+            }
+        }
+    }
+    result.erase(node);
+    return result;
+}
+
+
+/****************************************************************************/
+

@@ -1,0 +1,10 @@
+<configuration>
+    <input>
+        <net-file value="../roadnet/roadnet_sumo_6_6.net.xml"/>
+        <route-files value="../flow/flow_sumo_6_6.rou.xml"/>
+    </input>
+    <time>
+        <begin value="0"/>
+        <end value="3600"/>
+    </time>
+</configuration>

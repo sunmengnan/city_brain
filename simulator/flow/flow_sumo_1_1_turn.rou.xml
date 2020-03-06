@@ -1,0 +1,27 @@
+<?xml version='1.0' encoding='utf-8'?>
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo-sim.org/xsd/routes_file.xsd">
+<route edges="0/1to1/1 1/1to2/1" id="route0" />
+<route edges="2/1to1/1 1/1to0/1" id="route1" />
+<route edges="1/0to1/1 1/1to1/2" id="route2" />
+<route edges="1/2to1/1 1/1to1/0" id="route3" />
+<route edges="1/0to1/1 1/1to2/1" id="route4" />
+<route edges="1/0to1/1 1/1to0/1" id="route5" />
+<route edges="0/1to1/1 1/1to1/2" id="route6" />
+<route edges="2/1to1/1 1/1to1/2" id="route7" />
+<route edges="0/1to1/1 1/1to1/0" id="route8" />
+<route edges="1/2to1/1 1/1to2/1" id="route9" />
+<route edges="1/2to1/1 1/1to0/1" id="route10" />
+<route edges="2/1to1/1 1/1to1/0" id="route11" />
+<flow begin="0" end="3600" id="flow0" route="route0" vehsPerHour="1200" />
+<flow begin="0" end="3600" id="flow1" route="route1" vehsPerHour="1200" />
+<flow begin="0" end="3600" id="flow2" route="route2" vehsPerHour="1200" />
+<flow begin="0" end="3600" id="flow3" route="route3" vehsPerHour="1200" />
+<flow begin="0" end="3600" id="flow4" route="route4" vehsPerHour="1200" />
+<flow begin="0" end="3600" id="flow5" route="route5" vehsPerHour="1200" />
+<flow begin="0" end="3600" id="flow6" route="route6" vehsPerHour="1200" />
+<flow begin="0" end="3600" id="flow7" route="route7" vehsPerHour="1200" />
+<flow begin="0" end="3600" id="flow8" route="route8" vehsPerHour="1200" />
+<flow begin="0" end="3600" id="flow9" route="route9" vehsPerHour="1200" />
+<flow begin="0" end="3600" id="flow10" route="route10" vehsPerHour="1200" />
+<flow begin="0" end="3600" id="flow11" route="route11" vehsPerHour="1200" />
+</routes>

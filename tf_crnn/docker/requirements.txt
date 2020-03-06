@@ -1,0 +1,6 @@
+opencv-python
+numpy
+easydict
+imgaug
+pyyaml
+tqdm

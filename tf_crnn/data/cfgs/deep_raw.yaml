@@ -1,0 +1,33 @@
+name: deep_raw
+epochs: 10
+batch_size: 64
+step_do_da: 30000
+
+lr: 0.001
+lr_decay_epochs:
+- 1
+- 2
+- 4
+- 6
+lr_decay_rate: 0.5
+
+# adadelate, adam, rms
+optimizer: rms
+
+use_lstm: true
+num_lstm_layer: 2
+rnn_keep_prob: 1.0
+rnn_num_units: 256
+
+da:
+  enable: true
+  rate: 0.7
+
+  resize:
+    enable: true
+    rate: 0.7
+    min: 2.0
+    max: 3.0
+  crop:
+    enable: false
+    rate: 0.5

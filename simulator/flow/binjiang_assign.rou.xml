@@ -1,0 +1,29 @@
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/routes_file.xsd">
+    <vType id="SUMO_DEFAULT_TYPE" accel="0.8" decel="4.5" sigma="0" length="5" minGap="2" maxSpeed="70"/>
+
+
+
+
+
+    <flow id="01" type="SUMO_DEFAULT_TYPE" begin="0" end="3600" number="1800" from="589558021" to="531431467#1" departPos="1" departLane="best" departSpeed="5.0"/>
+    <flow id="02" type="SUMO_DEFAULT_TYPE" begin="0" end="3600" number="1800" from="531431467#1" to="589558021" departPos="2" departLane="best" departSpeed="5.0"/>
+    <flow id="03" type="SUMO_DEFAULT_TYPE" begin="0" end="3600" number="1800" from="154325304#1" to="338993988#2" departPos="3" departLane="best" departSpeed="5.0"/>
+    <flow id="04" type="SUMO_DEFAULT_TYPE" begin="0" end="3600" number="1800" from="338993988#2" to="154325304#1" departPos="4" departLane="best" departSpeed="5.0"/>
+    <flow id="05" type="SUMO_DEFAULT_TYPE" begin="0" end="3600" number="1800" from="589429903#0" to="589429903#1" departPos="4" departLane="best" departSpeed="5.0"/>
+    <flow id="06" type="SUMO_DEFAULT_TYPE" begin="0" end="3600" number="1800" from="437408022#1" to="113467413#3" departPos="1" departLane="best" departSpeed="5.0"/>
+    <flow id="07" type="SUMO_DEFAULT_TYPE" begin="0" end="3600" number="1800" from="113467413#3" to="437408022#1" departPos="3" departLane="best" departSpeed="5.0"/>
+    <flow id="08" type="SUMO_DEFAULT_TYPE" begin="0" end="3600" number="1800" from="589429903#0" to="602639291#5" departPos="4" departLane="best" departSpeed="5.0"/>
+    <flow id="09" type="SUMO_DEFAULT_TYPE" begin="0" end="3600" number="1800" from="602639291#5" to="589429903#0" departPos="4" departLane="best" departSpeed="5.0"/>
+    <flow id="10" type="SUMO_DEFAULT_TYPE" begin="0" end="3600" number="1800" from="602639291#5" to="434864902#2" departPos="1" departLane="best" departSpeed="5.0"/>
+
+
+
+    <flow id="11" type="SUMO_DEFAULT_TYPE" begin="0" end="3600" number="1200" from="222477080#0" to="222477080#6" departPos="4" departLane="best" departSpeed="5.0"/>
+    <flow id="12" type="SUMO_DEFAULT_TYPE" begin="0" end="3600" number="1200" from="222477080#6" to="222477080#0" departPos="1" departLane="best" departSpeed="5.0"/>
+    <flow id="13" type="SUMO_DEFAULT_TYPE" begin="0" end="3600" number="1200" from="154351779#6" to="222477080#4" departPos="4" departLane="best" departSpeed="5.0"/>
+    <flow id="14" type="SUMO_DEFAULT_TYPE" begin="0" end="3600" number="1200" from="222477080#6" to="154351779#6" departPos="1" departLane="best" departSpeed="5.0"/>
+    <flow id="15" type="SUMO_DEFAULT_TYPE" begin="0" end="3600" number="1200" from="113467433#0" to="113467433#1" departPos="4" departLane="best" departSpeed="5.0"/>
+    <flow id="16" type="SUMO_DEFAULT_TYPE" begin="0" end="3600" number="1200" from="113467433#1" to="113467433#0" departPos="1" departLane="best" departSpeed="5.0"/>
+    <flow id="17" type="SUMO_DEFAULT_TYPE" begin="0" end="3600" number="1200" from="586031549#0" to="586031549#2" departPos="4" departLane="best" departSpeed="5.0"/>
+    <flow id="18" type="SUMO_DEFAULT_TYPE" begin="0" end="3600" number="1200" from="586031549#2" to="586031549#0" departPos="1" departLane="best" departSpeed="5.0"/>
+</routes>

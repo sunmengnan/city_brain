@@ -1,0 +1,10 @@
+<configuration>
+    <input>
+        <net-file value="../roadnet/binjiang1.net.xml"/>
+        <route-files value="../flow/binjiang.rou.xml"/>
+    </input>
+    <time>
+        <begin value="0"/>
+        <end value="3600"/>
+    </time>
+</configuration>

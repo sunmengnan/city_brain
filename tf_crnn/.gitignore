@@ -1,0 +1,8 @@
+.idea/
+__pycache__
+output/
+model/
+.DS_Store
+data/ocr_chars
+*.sh
+*.yml

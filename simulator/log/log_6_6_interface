@@ -1,0 +1,659 @@
+0:55.47
+0:54.34
+0:55.01
+0:54.11
+0:55.44
+0:55.19
+0:55.23
+0:57.38
+0:54.13
+0:52.57
+Error: Could not access configuration './sumocfg/6_turn.sumocfg'.
+Quitting (on error).
+Traceback (most recent call last):
+  File "/root/sumo/tools/traci/__init__.py", line 68, in connect
+    return Connection(host, port, proc)
+  File "/root/sumo/tools/traci/connection.py", line 54, in __init__
+    self._socket.connect((host, port))
+ConnectionRefusedError: [Errno 111] Connection refused
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "interface.py", line 14, in <module>
+    runTraci()
+  File "interface.py", line 5, in runTraci
+    traci.start(["sumo", "-c", "./sumocfg/6_turn.sumocfg", "--no-warnings"])
+  File "/root/sumo/tools/traci/__init__.py", line 97, in start
+    _connections[label] = connect(port, numRetries, "localhost", sumoProcess)
+  File "/root/sumo/tools/traci/__init__.py", line 74, in connect
+    time.sleep(wait)
+KeyboardInterrupt
+Command exited with non-zero status 1
+0:07.18
+Error: Could not access configuration './sumocfg/6_turn.sumocfg'.
+Quitting (on error).
+Traceback (most recent call last):
+  File "/root/sumo/tools/traci/__init__.py", line 68, in connect
+    return Connection(host, port, proc)
+  File "/root/sumo/tools/traci/connection.py", line 54, in __init__
+    self._socket.connect((host, port))
+ConnectionRefusedError: [Errno 111] Connection refused
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "interface.py", line 14, in <module>
+    runTraci()
+  File "interface.py", line 5, in runTraci
+    traci.start(["sumo", "-c", "./sumocfg/6_turn.sumocfg", "--no-warnings"])
+  File "/root/sumo/tools/traci/__init__.py", line 97, in start
+    _connections[label] = connect(port, numRetries, "localhost", sumoProcess)
+  File "/root/sumo/tools/traci/__init__.py", line 74, in connect
+    time.sleep(wait)
+KeyboardInterrupt
+Command exited with non-zero status 1
+0:01.38
+Error: Could not access configuration './sumocfg/6_turn.sumocfg'.
+Quitting (on error).
+Traceback (most recent call last):
+  File "/root/sumo/tools/traci/__init__.py", line 68, in connect
+    return Connection(host, port, proc)
+  File "/root/sumo/tools/traci/connection.py", line 54, in __init__
+    self._socket.connect((host, port))
+ConnectionRefusedError: [Errno 111] Connection refused
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "interface.py", line 14, in <module>
+    runTraci()
+  File "interface.py", line 5, in runTraci
+    traci.start(["sumo", "-c", "./sumocfg/6_turn.sumocfg", "--no-warnings"])
+  File "/root/sumo/tools/traci/__init__.py", line 97, in start
+    _connections[label] = connect(port, numRetries, "localhost", sumoProcess)
+  File "/root/sumo/tools/traci/__init__.py", line 74, in connect
+    time.sleep(wait)
+KeyboardInterrupt
+Command exited with non-zero status 1
+0:00.69
+Traceback (most recent call last):
+  File "interface.py", line 1, in <module>
+    import traci
+  File "/root/sumo/tools/traci/__init__.py", line 37, in <module>
+    import sumolib  # noqa
+  File "/root/sumo/tools/sumolib/__init__.py", line 25, in <module>
+    from . import visualization
+  File "/root/sumo/tools/sumolib/visualization/__init__.py", line 17, in <module>
+    from . import helpers   # noqa
+  File "/root/sumo/tools/sumolib/visualization/helpers.py", line 25, in <module>
+    from pylab import arange, close, cm, get_cmap, figure, legend, log, plt, savefig, show, title  # noqa
+  File "/opt/conda/lib/python3.6/site-packages/pylab.py", line 1, in <module>
+    from matplotlib.pylab import *
+  File "/opt/conda/lib/python3.6/site-packages/matplotlib/pylab.py", line 227, in <module>
+    from matplotlib.dates import (
+  File "/opt/conda/lib/python3.6/site-packages/matplotlib/dates.py", line 152, in <module>
+    from dateutil.rrule import (rrule, MO, TU, WE, TH, FR, SA, SU, YEARLY,
+  File "/opt/conda/lib/python3.6/site-packages/dateutil/rrule.py", line 24, in <module>
+    from .tz import tzutc, tzlocal
+  File "/opt/conda/lib/python3.6/site-packages/dateutil/tz/__init__.py", line 2, in <module>
+    from .tz import *
+  File "/opt/conda/lib/python3.6/site-packages/dateutil/tz/tz.py", line 20, in <module>
+    from ._common import tzname_in_python2, _tzinfo
+  File "<frozen importlib._bootstrap>", line 971, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 955, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 665, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 674, in exec_module
+  File "<frozen importlib._bootstrap_external>", line 771, in get_code
+  File "<frozen importlib._bootstrap_external>", line 456, in _validate_bytecode_header
+KeyboardInterrupt
+Command exited with non-zero status 1
+0:00.22
+Traceback (most recent call last):
+  File "interface.py", line 1, in <module>
+    import traci
+  File "/root/sumo/tools/traci/__init__.py", line 37, in <module>
+    import sumolib  # noqa
+  File "/root/sumo/tools/sumolib/__init__.py", line 25, in <module>
+    from . import visualization
+  File "/root/sumo/tools/sumolib/visualization/__init__.py", line 17, in <module>
+    from . import helpers   # noqa
+  File "/root/sumo/tools/sumolib/visualization/helpers.py", line 25, in <module>
+    from pylab import arange, close, cm, get_cmap, figure, legend, log, plt, savefig, show, title  # noqa
+  File "/opt/conda/lib/python3.6/site-packages/pylab.py", line 1, in <module>
+    from matplotlib.pylab import *
+  File "/opt/conda/lib/python3.6/site-packages/matplotlib/pylab.py", line 252, in <module>
+    from matplotlib import cbook, mlab, pyplot as plt
+  File "/opt/conda/lib/python3.6/site-packages/matplotlib/pyplot.py", line 39, in <module>
+    from matplotlib.figure import Figure, figaspect
+  File "/opt/conda/lib/python3.6/site-packages/matplotlib/figure.py", line 40, in <module>
+    from matplotlib.axes import Axes, SubplotBase, subplot_class_factory
+  File "/opt/conda/lib/python3.6/site-packages/matplotlib/axes/__init__.py", line 4, in <module>
+    from ._subplots import *
+  File "/opt/conda/lib/python3.6/site-packages/matplotlib/axes/_subplots.py", line 10, in <module>
+    from matplotlib.axes._axes import Axes
+  File "/opt/conda/lib/python3.6/site-packages/matplotlib/axes/_axes.py", line 35, in <module>
+    import matplotlib.streamplot as mstream
+  File "/opt/conda/lib/python3.6/site-packages/matplotlib/streamplot.py", line 5, in <module>
+    from __future__ import (absolute_import, division, print_function,
+KeyboardInterrupt
+Command exited with non-zero status 1
+0:00.30
+Traceback (most recent call last):
+  File "interface.py", line 1, in <module>
+    import traci
+  File "/root/sumo/tools/traci/__init__.py", line 37, in <module>
+    import sumolib  # noqa
+  File "/root/sumo/tools/sumolib/__init__.py", line 25, in <module>
+    from . import visualization
+  File "/root/sumo/tools/sumolib/visualization/__init__.py", line 17, in <module>
+    from . import helpers   # noqa
+  File "/root/sumo/tools/sumolib/visualization/helpers.py", line 25, in <module>
+    from pylab import arange, close, cm, get_cmap, figure, legend, log, plt, savefig, show, title  # noqa
+  File "/opt/conda/lib/python3.6/site-packages/pylab.py", line 1, in <module>
+    from matplotlib.pylab import *
+  File "/opt/conda/lib/python3.6/site-packages/matplotlib/pylab.py", line 252, in <module>
+    from matplotlib import cbook, mlab, pyplot as plt
+  File "/opt/conda/lib/python3.6/site-packages/matplotlib/pyplot.py", line 31, in <module>
+    import matplotlib.colorbar
+  File "/opt/conda/lib/python3.6/site-packages/matplotlib/colorbar.py", line 36, in <module>
+    import matplotlib.contour as contour
+  File "/opt/conda/lib/python3.6/site-packages/matplotlib/contour.py", line 21, in <module>
+    import matplotlib.text as text
+  File "/opt/conda/lib/python3.6/site-packages/matplotlib/text.py", line 22, in <module>
+    from .textpath import TextPath  # Unused, but imported by others.
+  File "/opt/conda/lib/python3.6/site-packages/matplotlib/textpath.py", line 21, in <module>
+    import matplotlib.dviread as dviread
+  File "/opt/conda/lib/python3.6/site-packages/matplotlib/dviread.py", line 68, in <module>
+    Page = namedtuple('Page', 'text boxes height width descent')
+  File "/opt/conda/lib/python3.6/collections/__init__.py", line 429, in namedtuple
+    exec(class_definition, namespace)
+  File "<string>", line 1, in <module>
+KeyboardInterrupt
+Command exited with non-zero status 1
+0:00.26
+Error: Could not access configuration './sumocfg/6_turn.sumocfg'.
+Quitting (on error).
+Traceback (most recent call last):
+  File "/root/sumo/tools/traci/__init__.py", line 68, in connect
+    return Connection(host, port, proc)
+  File "/root/sumo/tools/traci/connection.py", line 54, in __init__
+    self._socket.connect((host, port))
+ConnectionRefusedError: [Errno 111] Connection refused
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "interface.py", line 14, in <module>
+    runTraci()
+  File "interface.py", line 5, in runTraci
+    traci.start(["sumo", "-c", "./sumocfg/6_turn.sumocfg", "--no-warnings"])
+  File "/root/sumo/tools/traci/__init__.py", line 97, in start
+    _connections[label] = connect(port, numRetries, "localhost", sumoProcess)
+  File "/root/sumo/tools/traci/__init__.py", line 74, in connect
+    time.sleep(wait)
+KeyboardInterrupt
+Command exited with non-zero status 1
+0:02.41
+Error: Could not access configuration './sumocfg/6_turn.sumocfg'.
+Quitting (on error).
+Traceback (most recent call last):
+  File "/root/sumo/tools/traci/__init__.py", line 68, in connect
+    return Connection(host, port, proc)
+  File "/root/sumo/tools/traci/connection.py", line 54, in __init__
+    self._socket.connect((host, port))
+ConnectionRefusedError: [Errno 111] Connection refused
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "interface.py", line 14, in <module>
+    runTraci()
+  File "interface.py", line 5, in runTraci
+    traci.start(["sumo", "-c", "./sumocfg/6_turn.sumocfg", "--no-warnings"])
+  File "/root/sumo/tools/traci/__init__.py", line 97, in start
+    _connections[label] = connect(port, numRetries, "localhost", sumoProcess)
+  File "/root/sumo/tools/traci/__init__.py", line 74, in connect
+    time.sleep(wait)
+KeyboardInterrupt
+Command exited with non-zero status 1
+0:00.96
+Traceback (most recent call last):
+  File "interface.py", line 1, in <module>
+    import traci
+  File "/root/sumo/tools/traci/__init__.py", line 37, in <module>
+    import sumolib  # noqa
+  File "/root/sumo/tools/sumolib/__init__.py", line 25, in <module>
+    from . import visualization
+  File "/root/sumo/tools/sumolib/visualization/__init__.py", line 17, in <module>
+    from . import helpers   # noqa
+  File "/root/sumo/tools/sumolib/visualization/helpers.py", line 25, in <module>
+    from pylab import arange, close, cm, get_cmap, figure, legend, log, plt, savefig, show, title  # noqa
+  File "/opt/conda/lib/python3.6/site-packages/pylab.py", line 1, in <module>
+    from matplotlib.pylab import *
+  File "/opt/conda/lib/python3.6/site-packages/matplotlib/pylab.py", line 252, in <module>
+    from matplotlib import cbook, mlab, pyplot as plt
+  File "/opt/conda/lib/python3.6/site-packages/matplotlib/pyplot.py", line 3810, in <module>
+    @docstring.copy_dedent(Axes.grid)
+  File "/opt/conda/lib/python3.6/site-packages/matplotlib/docstring.py", line 128, in copy_dedent
+    return lambda target: dedent(copy(source)(target))
+KeyboardInterrupt
+Command exited with non-zero status 1
+0:00.35
+Error: Could not access configuration './sumocfg/6_turn.sumocfg'.
+Quitting (on error).
+Traceback (most recent call last):
+  File "/root/sumo/tools/traci/__init__.py", line 68, in connect
+    return Connection(host, port, proc)
+  File "/root/sumo/tools/traci/connection.py", line 54, in __init__
+    self._socket.connect((host, port))
+ConnectionRefusedError: [Errno 111] Connection refused
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "interface.py", line 14, in <module>
+    runTraci()
+  File "interface.py", line 5, in runTraci
+    traci.start(["sumo", "-c", "./sumocfg/6_turn.sumocfg", "--no-warnings"])
+  File "/root/sumo/tools/traci/__init__.py", line 97, in start
+    _connections[label] = connect(port, numRetries, "localhost", sumoProcess)
+  File "/root/sumo/tools/traci/__init__.py", line 74, in connect
+    time.sleep(wait)
+KeyboardInterrupt
+Command terminated by signal 2
+0:00.49
+Traceback (most recent call last):
+  File "interface.py", line 1, in <module>
+    import traci
+ImportError: No module named traci
+Command exited with non-zero status 1
+0:00.03
+Traceback (most recent call last):
+  File "interface.py", line 1, in <module>
+    import traci
+ImportError: No module named traci
+Command exited with non-zero status 1
+0:00.01
+Traceback (most recent call last):
+  File "interface.py", line 1, in <module>
+    import traci
+ImportError: No module named traci
+Command exited with non-zero status 1
+0:00.01
+Traceback (most recent call last):
+  File "interface.py", line 1, in <module>
+    import traci
+ImportError: No module named traci
+Command exited with non-zero status 1
+0:00.02
+Traceback (most recent call last):
+  File "interface.py", line 1, in <module>
+    import traci
+ImportError: No module named traci
+Command exited with non-zero status 1
+0:00.02
+Traceback (most recent call last):
+  File "interface.py", line 1, in <module>
+    import traci
+ImportError: No module named traci
+Command exited with non-zero status 1
+0:00.02
+Traceback (most recent call last):
+  File "interface.py", line 1, in <module>
+    import traci
+ImportError: No module named traci
+Command exited with non-zero status 1
+0:00.01
+Traceback (most recent call last):
+  File "interface.py", line 1, in <module>
+    import traci
+ImportError: No module named traci
+Command exited with non-zero status 1
+0:00.01
+Traceback (most recent call last):
+  File "interface.py", line 1, in <module>
+    import traci
+ImportError: No module named traci
+Command exited with non-zero status 1
+0:00.02
+Traceback (most recent call last):
+  File "interface.py", line 1, in <module>
+    import traci
+ImportError: No module named traci
+Command exited with non-zero status 1
+0:00.01
+Traceback (most recent call last):
+  File "interface.py", line 1, in <module>
+    import traci
+ImportError: No module named traci
+Command exited with non-zero status 1
+0:00.03
+Traceback (most recent call last):
+  File "interface.py", line 1, in <module>
+    import traci
+ImportError: No module named traci
+Command exited with non-zero status 1
+0:00.02
+Traceback (most recent call last):
+  File "interface.py", line 1, in <module>
+    import traci
+ImportError: No module named traci
+Command exited with non-zero status 1
+0:00.02
+Traceback (most recent call last):
+  File "interface.py", line 1, in <module>
+    import traci
+ImportError: No module named traci
+Command exited with non-zero status 1
+0:00.02
+Traceback (most recent call last):
+  File "interface.py", line 1, in <module>
+    import traci
+ImportError: No module named traci
+Command exited with non-zero status 1
+0:00.02
+Traceback (most recent call last):
+  File "interface.py", line 1, in <module>
+    import traci
+ImportError: No module named traci
+Command exited with non-zero status 1
+0:00.02
+Traceback (most recent call last):
+  File "interface.py", line 1, in <module>
+    import traci
+ImportError: No module named traci
+Command exited with non-zero status 1
+0:00.02
+Traceback (most recent call last):
+  File "interface.py", line 1, in <module>
+    import traci
+ImportError: No module named traci
+Command exited with non-zero status 1
+0:00.02
+Traceback (most recent call last):
+  File "interface.py", line 1, in <module>
+    import traci
+ImportError: No module named traci
+Command exited with non-zero status 1
+0:00.02
+Traceback (most recent call last):
+  File "interface.py", line 1, in <module>
+    import traci
+ImportError: No module named traci
+Command exited with non-zero status 1
+0:00.02
+Traceback (most recent call last):
+  File "interface.py", line 1, in <module>
+    import traci
+ImportError: No module named traci
+Command exited with non-zero status 1
+0:00.03
+Traceback (most recent call last):
+  File "interface.py", line 1, in <module>
+    import traci
+ImportError: No module named traci
+Command exited with non-zero status 1
+0:00.03
+Traceback (most recent call last):
+  File "interface.py", line 1, in <module>
+    import traci
+ImportError: No module named traci
+Command exited with non-zero status 1
+0:00.03
+Traceback (most recent call last):
+  File "interface.py", line 1, in <module>
+    import traci
+ImportError: No module named traci
+Command exited with non-zero status 1
+0:00.03
+Traceback (most recent call last):
+  File "interface.py", line 1, in <module>
+    import test.libsumo as traci
+  File "/media/sunmengnan/F_Disk/TR/pure_light_control/bench/test/libsumo/__init__.py", line 1, in <module>
+    from .libsumo import *
+  File "/media/sunmengnan/F_Disk/TR/pure_light_control/bench/test/libsumo/libsumo.py", line 94, in <module>
+    from traci import constants, exceptions, _vehicle, _person, _trafficlight
+ImportError: No module named traci
+Command exited with non-zero status 1
+0:00.06
+Traceback (most recent call last):
+  File "interface.py", line 1, in <module>
+    import test.libsumo as traci
+  File "/media/sunmengnan/F_Disk/TR/pure_light_control/bench/test/libsumo/__init__.py", line 1, in <module>
+    from .libsumo import *
+  File "/media/sunmengnan/F_Disk/TR/pure_light_control/bench/test/libsumo/libsumo.py", line 94, in <module>
+    from traci import constants, exceptions, _vehicle, _person, _trafficlight
+ImportError: No module named traci
+Command exited with non-zero status 1
+0:00.05
+Traceback (most recent call last):
+  File "interface.py", line 1, in <module>
+    import test.libsumo as traci
+  File "/media/sunmengnan/F_Disk/TR/pure_light_control/bench/test/libsumo/__init__.py", line 1, in <module>
+    from .libsumo import *
+  File "/media/sunmengnan/F_Disk/TR/pure_light_control/bench/test/libsumo/libsumo.py", line 94, in <module>
+    from traci import constants, exceptions, _vehicle, _person, _trafficlight
+ImportError: No module named traci
+Command exited with non-zero status 1
+0:00.04
+Traceback (most recent call last):
+  File "interface.py", line 1, in <module>
+    import test.libsumo as traci
+  File "/media/sunmengnan/F_Disk/TR/pure_light_control/bench/test/libsumo/__init__.py", line 1, in <module>
+    from .libsumo import *
+  File "/media/sunmengnan/F_Disk/TR/pure_light_control/bench/test/libsumo/libsumo.py", line 94, in <module>
+    from traci import constants, exceptions, _vehicle, _person, _trafficlight
+ImportError: No module named traci
+Command exited with non-zero status 1
+0:00.07
+Traceback (most recent call last):
+  File "interface.py", line 1, in <module>
+    import test.libsumo as traci
+  File "/media/sunmengnan/F_Disk/TR/pure_light_control/bench/test/libsumo/__init__.py", line 1, in <module>
+    from .libsumo import *
+  File "/media/sunmengnan/F_Disk/TR/pure_light_control/bench/test/libsumo/libsumo.py", line 94, in <module>
+    from traci import constants, exceptions, _vehicle, _person, _trafficlight
+ImportError: No module named traci
+Command exited with non-zero status 1
+0:00.04
+Traceback (most recent call last):
+  File "interface.py", line 1, in <module>
+    import test.libsumo as traci
+  File "/media/sunmengnan/F_Disk/TR/pure_light_control/bench/test/libsumo/__init__.py", line 1, in <module>
+    from .libsumo import *
+  File "/media/sunmengnan/F_Disk/TR/pure_light_control/bench/test/libsumo/libsumo.py", line 94, in <module>
+    from traci import constants, exceptions, _vehicle, _person, _trafficlight
+ImportError: No module named traci
+Command exited with non-zero status 1
+0:00.04
+Traceback (most recent call last):
+  File "interface.py", line 1, in <module>
+    import test.libsumo as traci
+  File "/media/sunmengnan/F_Disk/TR/pure_light_control/bench/test/libsumo/__init__.py", line 1, in <module>
+    from .libsumo import *
+  File "/media/sunmengnan/F_Disk/TR/pure_light_control/bench/test/libsumo/libsumo.py", line 94, in <module>
+    from traci import constants, exceptions, _vehicle, _person, _trafficlight
+ImportError: No module named traci
+Command exited with non-zero status 1
+0:00.04
+Traceback (most recent call last):
+  File "interface.py", line 1, in <module>
+    import test.libsumo as traci
+  File "/media/sunmengnan/F_Disk/TR/pure_light_control/bench/test/libsumo/__init__.py", line 1, in <module>
+    from .libsumo import *
+  File "/media/sunmengnan/F_Disk/TR/pure_light_control/bench/test/libsumo/libsumo.py", line 94, in <module>
+    from traci import constants, exceptions, _vehicle, _person, _trafficlight
+ImportError: No module named traci
+Command exited with non-zero status 1
+0:00.04
+Traceback (most recent call last):
+  File "interface.py", line 1, in <module>
+    import test.libsumo as traci
+  File "/media/sunmengnan/F_Disk/TR/pure_light_control/bench/test/libsumo/__init__.py", line 1, in <module>
+    from .libsumo import *
+  File "/media/sunmengnan/F_Disk/TR/pure_light_control/bench/test/libsumo/libsumo.py", line 94, in <module>
+    from traci import constants, exceptions, _vehicle, _person, _trafficlight
+ImportError: No module named traci
+Command exited with non-zero status 1
+0:00.04
+Traceback (most recent call last):
+  File "interface.py", line 1, in <module>
+    import test.libsumo as traci
+  File "/media/sunmengnan/F_Disk/TR/pure_light_control/bench/test/libsumo/__init__.py", line 1, in <module>
+    from .libsumo import *
+  File "/media/sunmengnan/F_Disk/TR/pure_light_control/bench/test/libsumo/libsumo.py", line 94, in <module>
+    from traci import constants, exceptions, _vehicle, _person, _trafficlight
+ImportError: No module named traci
+Command exited with non-zero status 1
+0:00.04
+Traceback (most recent call last):
+  File "interface.py", line 1, in <module>
+    import test.libsumo as traci
+  File "/media/sunmengnan/F_Disk/TR/pure_light_control/bench/test/libsumo/__init__.py", line 1, in <module>
+    from .libsumo import *
+  File "/media/sunmengnan/F_Disk/TR/pure_light_control/bench/test/libsumo/libsumo.py", line 94, in <module>
+    from traci import constants, exceptions, _vehicle, _person, _trafficlight
+ImportError: No module named traci
+Command exited with non-zero status 1
+0:00.06
+Traceback (most recent call last):
+  File "interface.py", line 1, in <module>
+    import test.libsumo as traci
+  File "/media/sunmengnan/F_Disk/TR/pure_light_control/bench/test/libsumo/__init__.py", line 1, in <module>
+    from .libsumo import *
+  File "/media/sunmengnan/F_Disk/TR/pure_light_control/bench/test/libsumo/libsumo.py", line 94, in <module>
+    from traci import constants, exceptions, _vehicle, _person, _trafficlight
+ImportError: No module named traci
+Command exited with non-zero status 1
+0:00.08
+Traceback (most recent call last):
+  File "interface.py", line 1, in <module>
+    import test.libsumo as traci
+  File "/media/sunmengnan/F_Disk/TR/pure_light_control/bench/test/libsumo/__init__.py", line 1, in <module>
+    from .libsumo import *
+  File "/media/sunmengnan/F_Disk/TR/pure_light_control/bench/test/libsumo/libsumo.py", line 94, in <module>
+    from traci import constants, exceptions, _vehicle, _person, _trafficlight
+ImportError: No module named traci
+Command exited with non-zero status 1
+0:00.06
+Traceback (most recent call last):
+  File "interface.py", line 1, in <module>
+    import test.libsumo as traci
+  File "/media/sunmengnan/F_Disk/TR/pure_light_control/bench/test/libsumo/__init__.py", line 1, in <module>
+    from .libsumo import *
+  File "/media/sunmengnan/F_Disk/TR/pure_light_control/bench/test/libsumo/libsumo.py", line 94, in <module>
+    from traci import constants, exceptions, _vehicle, _person, _trafficlight
+ImportError: No module named traci
+Command exited with non-zero status 1
+0:00.10
+Traceback (most recent call last):
+  File "interface.py", line 1, in <module>
+    import test.libsumo as traci
+  File "/media/sunmengnan/F_Disk/TR/pure_light_control/bench/test/libsumo/__init__.py", line 1, in <module>
+    from .libsumo import *
+  File "/media/sunmengnan/F_Disk/TR/pure_light_control/bench/test/libsumo/libsumo.py", line 94, in <module>
+    from traci import constants, exceptions, _vehicle, _person, _trafficlight
+ImportError: No module named traci
+Command exited with non-zero status 1
+0:00.08
+Traceback (most recent call last):
+  File "interface.py", line 1, in <module>
+    import test.libsumo as traci
+  File "/media/sunmengnan/F_Disk/TR/pure_light_control/bench/test/libsumo/__init__.py", line 1, in <module>
+    from .libsumo import *
+  File "/media/sunmengnan/F_Disk/TR/pure_light_control/bench/test/libsumo/libsumo.py", line 94, in <module>
+    from traci import constants, exceptions, _vehicle, _person, _trafficlight
+ImportError: No module named traci
+Command exited with non-zero status 1
+0:00.08
+Traceback (most recent call last):
+  File "interface.py", line 1, in <module>
+    import test.libsumo as traci
+  File "/media/sunmengnan/F_Disk/TR/pure_light_control/bench/test/libsumo/__init__.py", line 1, in <module>
+    from .libsumo import *
+  File "/media/sunmengnan/F_Disk/TR/pure_light_control/bench/test/libsumo/libsumo.py", line 94, in <module>
+    from traci import constants, exceptions, _vehicle, _person, _trafficlight
+ImportError: No module named traci
+Command exited with non-zero status 1
+0:00.04
+Traceback (most recent call last):
+  File "interface.py", line 1, in <module>
+    import test.libsumo as traci
+  File "/media/sunmengnan/F_Disk/TR/pure_light_control/bench/test/libsumo/__init__.py", line 1, in <module>
+    from .libsumo import *
+  File "/media/sunmengnan/F_Disk/TR/pure_light_control/bench/test/libsumo/libsumo.py", line 94, in <module>
+    from traci import constants, exceptions, _vehicle, _person, _trafficlight
+ImportError: No module named traci
+Command exited with non-zero status 1
+0:00.05
+Traceback (most recent call last):
+  File "interface.py", line 1, in <module>
+    import test.libsumo as traci
+  File "/media/sunmengnan/F_Disk/TR/pure_light_control/bench/test/libsumo/__init__.py", line 1, in <module>
+    from .libsumo import *
+  File "/media/sunmengnan/F_Disk/TR/pure_light_control/bench/test/libsumo/libsumo.py", line 94, in <module>
+    from traci import constants, exceptions, _vehicle, _person, _trafficlight
+ImportError: No module named traci
+Command exited with non-zero status 1
+0:00.05
+Traceback (most recent call last):
+  File "interface.py", line 1, in <module>
+    import test.libsumo as traci
+  File "/media/sunmengnan/F_Disk/TR/pure_light_control/bench/test/libsumo/__init__.py", line 1, in <module>
+    from .libsumo import *
+  File "/media/sunmengnan/F_Disk/TR/pure_light_control/bench/test/libsumo/libsumo.py", line 94, in <module>
+    from traci import constants, exceptions, _vehicle, _person, _trafficlight
+ImportError: No module named traci
+Command exited with non-zero status 1
+0:00.05
+Traceback (most recent call last):
+  File "interface.py", line 1, in <module>
+    import test.libsumo as traci
+  File "/media/sunmengnan/F_Disk/TR/pure_light_control/bench/test/libsumo/__init__.py", line 1, in <module>
+    from .libsumo import *
+  File "/media/sunmengnan/F_Disk/TR/pure_light_control/bench/test/libsumo/libsumo.py", line 94, in <module>
+    from traci import constants, exceptions, _vehicle, _person, _trafficlight
+ImportError: No module named traci
+Command exited with non-zero status 1
+0:00.04
+Traceback (most recent call last):
+  File "interface.py", line 1, in <module>
+    import test.libsumo as traci
+  File "/media/sunmengnan/F_Disk/TR/pure_light_control/bench/test/libsumo/__init__.py", line 1, in <module>
+    from .libsumo import *
+  File "/media/sunmengnan/F_Disk/TR/pure_light_control/bench/test/libsumo/libsumo.py", line 94, in <module>
+    from traci import constants, exceptions, _vehicle, _person, _trafficlight
+ImportError: No module named traci
+Command exited with non-zero status 1
+0:00.04
+Traceback (most recent call last):
+  File "interface.py", line 1, in <module>
+    import test.libsumo as traci
+  File "/media/sunmengnan/F_Disk/TR/pure_light_control/bench/test/libsumo/__init__.py", line 1, in <module>
+    from .libsumo import *
+  File "/media/sunmengnan/F_Disk/TR/pure_light_control/bench/test/libsumo/libsumo.py", line 94, in <module>
+    from traci import constants, exceptions, _vehicle, _person, _trafficlight
+ImportError: No module named traci
+Command exited with non-zero status 1
+0:00.05
+Traceback (most recent call last):
+  File "interface.py", line 1, in <module>
+    import test.libsumo as traci
+  File "/media/sunmengnan/F_Disk/TR/pure_light_control/bench/test/libsumo/__init__.py", line 1, in <module>
+    from .libsumo import *
+  File "/media/sunmengnan/F_Disk/TR/pure_light_control/bench/test/libsumo/libsumo.py", line 94, in <module>
+    from traci import constants, exceptions, _vehicle, _person, _trafficlight
+ImportError: No module named traci
+Command exited with non-zero status 1
+0:00.04
+Traceback (most recent call last):
+  File "interface.py", line 1, in <module>
+    import test.libsumo as traci
+  File "/media/sunmengnan/F_Disk/TR/pure_light_control/bench/test/libsumo/__init__.py", line 1, in <module>
+    from .libsumo import *
+  File "/media/sunmengnan/F_Disk/TR/pure_light_control/bench/test/libsumo/libsumo.py", line 94, in <module>
+    from traci import constants, exceptions, _vehicle, _person, _trafficlight
+ImportError: No module named traci
+Command exited with non-zero status 1
+0:00.06
